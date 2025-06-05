@@ -29,8 +29,8 @@ namespace CDC_Azure.Services
                     INSERT (Id, OrderNumber, LastName, Email) VALUES (@Id, @OrderNumber, @LastName, @Email);";
 
             using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@Id", order.id);
-            command.Parameters.AddWithValue("@OrderNumber", order.customer_name);
+            command.Parameters.AddWithValue("@Id", order.ID);
+            command.Parameters.AddWithValue("@OrderNumber", order.SONumber);
 
             await command.ExecuteNonQueryAsync();
         }

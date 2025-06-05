@@ -11,7 +11,7 @@ namespace CDC_Azure.Consumers
         private readonly ILogger<OrderConsumer> _logger;
 
         // Inject ILogger into the constructor
-        public OrderConsumer(ILogger<OrderConsumer> logger) : base("fullfillment.Test_DB.dbo.mstOrder")
+        public OrderConsumer(ILogger<OrderConsumer> logger) : base("fullfillment.TBiGSys.dbo.mstOrder")
         {
             _logger = logger;
         }
@@ -19,24 +19,24 @@ namespace CDC_Azure.Consumers
         // Update HandleMessage to include logging
         protected override async Task HandleMessage(mstOrder data)
         {
-            _logger.LogInformation($"Processing Order: {data.id}");  // Log information message
+            _logger.LogInformation($"Processing Order: {data.ID}");  // Log information message
 
             try
             {
                 // Trigger Airflow
                 var trigger = new AirflowTrigger();
-                await trigger.TriggerDagAsync("order_process", new
+                await trigger.TriggerDagAsync("dag_order_process", new
                 {
-                    orderId = data.id,
-                    customerName = data.customer_name
+                    orderId = data.ID,
+                    customerName = data.SONumber
                     //total = data.Total
                 });
 
-                _logger.LogInformation($"Successfully triggered Airflow for Order {data.id} - {data.customer_name}");
+                _logger.LogInformation($"Successfully triggered Airflow for Order {data.ID} - {data.SONumber}");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while processing Order {data.id}: {ex.Message}");
+                _logger.LogError($"Error occurred while processing Order {data.ID}: {ex.Message}");
                 throw; // Rethrow the exception if you want it to be handled elsewhere
             }
         }

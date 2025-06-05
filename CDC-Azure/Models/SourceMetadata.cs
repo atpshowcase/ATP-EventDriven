@@ -11,6 +11,6 @@
         public string table { get; set; }
         public string change_lsn { get; set; }
         public string commit_lsn { get; set; }
-        public int event_serial_no { get; set; }
+        public int? event_serial_no { get; set; }
     }
 }
